@@ -34,3 +34,22 @@ A cool trick we can use with `alist` and `assoc` is 'replacing' values in the li
 - mapcar: applies a given function to every member of a list
 - #' is the function operator and is shorthand for the following: `(function function-name)`
 - the *p* suffix is used for functions that return true/false/nil, the p stands for *predicates*
+
+## Loops
+
+### Loop n times
+
+```lisp
+(loop repeat n
+    collect 1) ;; returns (1 1 1 1 1 ...) or n times 1
+```
+
+### Loop with index
+
+```lisp
+(loop for i from 1 to 10
+    collect i) ;; returns (1 2 3 ... 10)
+```
+
+As is normal in Lisp, we tend to prefer returning values from our functions. In a loop, the return value is defined by `collect`.
+
