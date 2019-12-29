@@ -1,4 +1,4 @@
-(load "graph-builder")
+(load "../utils/graph-builder")
 
 (defparameter *congestion-city-nodes* nil)
 (defparameter *congestion-city-edges* nil)
