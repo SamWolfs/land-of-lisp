@@ -138,3 +138,37 @@ Special getters are also created for every *slot* of the *structure*. (These get
 
 The values printed by the REPL (e.g. `#S(PERSON :NAME "Sam" :AGE 26 :WAIST-SIZE 30 :FAVOURITE-COLOUR "blue")`) can also be used to create a structure, the type will be inferred automatically. (JSON, say hello to LISP Object Notation?)
 
+## Functional Programming
+
+### Optimizations
+
+#### Tail call
+
+Tail call optimization happens when a function ends by calling itself recursively; while with regular recursion, it's part of the returning expression. This optimization leads to less frames being added to the call stack, as the calling function doesn't have to keep track of the recursively called function's return value; in contrast to regular recursion where every new recursive call is added to the call stack and can lead to the infamous stack overflow.
+
+#### Memoization
+
+Memoization is the practice of using **closures** to store values of compute-heavy functions. By defining a map/set inside of the closure, we can store function return values based on their input parameters (in FP, the same input will always return the same output), significantly reducing consecutive calculations of long-running algorithms.
+
+Example:
+
+```lisp
+(defun neighbours (pos)
+  (let ((up (- pos *board-size*))
+        (down (+ pos *board-size*)))
+      (loop for p in (append (list up down)
+                             (unless (zerop (mod pos *board-size*))
+                                (list (1- up) (1- pos)))
+                             (unless (zerop (mod (1+ pos) *board-size*))
+                                (list (1+ pos) (1+ down))))
+            when (and (>= p 0) (< p *board-hexnum*))
+            collect p)))
+;; memoization
+(let ((old-neighbours (symbol-function 'neighbours))
+      (previous (make-hash-table)))
+    (defun neighbours (pos)
+      (or (gethash pos previous)
+          (setf (gethash pos previous) (funcall old-neighbours pos)))))
+```
+
+## Macros
